@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moonmatch — lunar compatibility</title>
+    <meta
+      name="description"
+      content="The night you were born, the moon wore a particular face. Enter two birthdays and see how your phases fit together."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='26' fill='%23e9ebf5'/%3E%3Ccircle cx='21' cy='27' r='25' fill='%23070a18'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Outfit:wght@300..600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* pre-hydration guard: keep the first paint dark and the page hidden
+         until main.ts signals ready — no flash of unstyled markup or
+         fallback fonts. Inline so it applies before any stylesheet loads. */
+      html {
+        background: #04050c;
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: #04050c;
+        visibility: hidden;
+        opacity: 0;
+      }
+      body.ready {
+        visibility: visible;
+        opacity: 1;
+        transition: opacity 0.7s ease;
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-hZ1yHSSw.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Cc_IDE4y.css">
+  </head>
+  <body>
+    <canvas id="stars" aria-hidden="true"></canvas>
+
+    <div class="page">
+      <header class="hero">
+        <p class="brand">☾ &nbsp;Moonmatch&nbsp; ☽</p>
+        <h1>Two moons, one&nbsp;sky</h1>
+        <p class="tagline">
+          The night you were born, the moon wore a particular face. Enter two birthdays and see
+          whether your phases complete each other — two halves of a single full moon.
+        </p>
+        <div class="phase-strip" id="phase-strip" aria-hidden="true"></div>
+      </header>
+
+      <main>
+        <section class="duet" id="duet">
+          <article class="panel" data-panel="a">
+            <p class="panel-tag">First moon</p>
+            <div class="moon-wrap">
+              <canvas class="moon-glow" aria-hidden="true"></canvas>
+              <canvas class="moon" role="img" aria-label="Moon phase for the first birthday"></canvas>
+            </div>
+            <div class="phase-readout swap">
+              <p class="phase-name">Awaiting a birthday</p>
+              <p class="phase-meta">the moon holds its breath</p>
+            </div>
+            <div class="fields">
+              <label class="field">
+                <span class="field-label">Name</span>
+                <input class="name-input" type="text" placeholder="Optional" autocomplete="off" maxlength="24" />
+              </label>
+              <div class="field date-field">
+                <span class="field-label" id="born-label-a">Born on</span>
+                <input class="date-input" type="text" aria-labelledby="born-label-a" autocomplete="off" required />
+              </div>
+            </div>
+          </article>
+
+          <div class="divider" aria-hidden="true">
+            <span class="divider-line"></span>
+            <span class="divider-badge">&amp;</span>
+            <span class="divider-line"></span>
+          </div>
+
+          <article class="panel" data-panel="b">
+            <p class="panel-tag">Second moon</p>
+            <div class="moon-wrap">
+              <canvas class="moon-glow" aria-hidden="true"></canvas>
+              <canvas class="moon" role="img" aria-label="Moon phase for the second birthday"></canvas>
+            </div>
+            <div class="phase-readout swap">
+              <p class="phase-name">Awaiting a birthday</p>
+              <p class="phase-meta">the moon holds its breath</p>
+            </div>
+            <div class="fields">
+              <label class="field">
+                <span class="field-label">Name</span>
+                <input class="name-input" type="text" placeholder="Optional" autocomplete="off" maxlength="24" />
+              </label>
+              <div class="field date-field">
+                <span class="field-label" id="born-label-b">Born on</span>
+                <input class="date-input" type="text" aria-labelledby="born-label-b" autocomplete="off" required />
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <div class="cta-row">
+          <button id="reveal" class="cta" disabled>
+            <span class="cta-text">Reveal compatibility</span>
+          </button>
+          <p class="cta-hint" id="cta-hint">Enter both birthdays to consult the moon</p>
+        </div>
+
+        <section class="result" id="result" hidden data-tier="mid" aria-live="polite">
+          <div class="result-inner">
+            <button type="button" class="result-close" aria-label="Close">✕</button>
+            <div class="merge-side">
+              <div class="merge-wrap">
+                <canvas class="merge-glow" aria-hidden="true"></canvas>
+                <canvas class="merge-moon" role="img" aria-label="Both birth moons combined on one disk"></canvas>
+                <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" class="ring-stop-a" />
+                      <stop offset="1" class="ring-stop-b" />
+                    </linearGradient>
+                  </defs>
+                  <circle class="ring-bg" cx="50" cy="50" r="47" />
+                  <circle class="ring-fg" cx="50" cy="50" r="47" />
+                </svg>
+                <canvas class="merge-particles" aria-hidden="true"></canvas>
+              </div>
+            </div>
+            <div class="score-side">
+              <p class="score-pair"></p>
+              <p class="score-number">· · ·</p>
+              <p class="score-caption">lunar compatibility</p>
+              <h2 class="verdict-title"></h2>
+              <p class="verdict-line"></p>
+              <div class="chips"></div>
+              <p class="method-note">
+                Compatibility is the share of one full moon your two lit shapes cover together,
+                minus where they overlap — two halves of the same night score highest.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>
+          Phases computed from the 29.53-day synodic cycle · northern-hemisphere view · the moon,
+          as always, is not responsible for your decisions
+        </p>
+      </footer>
+    </div>
+
+  </body>
+</html>
